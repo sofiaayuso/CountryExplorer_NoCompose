@@ -1,6 +1,7 @@
 package com.example.countryexplorer.singlecountry
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -43,15 +44,14 @@ class SingleCountryFragment() : Fragment() {
 
         // this logic shouldn't be here
         val countryName = getCountryNameFromArgs()
-        getCountryDataFromDb(countryName)
+//        getCountryDataFromDb(countryName)
 
-
-////        // TODO: fix this:
-////        viewModel.singleCountryViewStateFlow
-////            .onEach {
-////                singleCountryViewState
-////                onViewStateUpdate(singleCountryViewState)
-////            }.launchIn(lifecycleScope)
+//        // TODO: fix this:
+//        viewModel.singleCountryViewStateFlow
+//            .onEach {
+//                singleCountryViewState
+//                onViewStateUpdate(singleCountryViewState)
+//            }.launchIn(lifecycleScope)
 
         return ui.root
     }
@@ -76,8 +76,11 @@ class SingleCountryFragment() : Fragment() {
     }
 
     private fun getCountryNameFromArgs(): String {
+//        Log.d("COUNTRYNAME in single", "GOT HERE")
         val tv: TextView = view!!.findViewById(R.id.country_name)
-        return arguments?.getString("country_name").toString()
+        return arguments?.getString("countryName").toString()
+//        val tv = view.findViewById<TextView>(R.id.country_name)
+//        return tv.text = arguments?.getString("countryName")
     }
 
     private fun getCountryDataFromDb(countryName: String) {

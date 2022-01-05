@@ -1,6 +1,7 @@
 package com.example.countryexplorer.countryexplorer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,6 +98,7 @@ class CountryExplorerFragment: Fragment(), RecyclerViewClickListener {
     override fun onClick(view: View?, position: Int) {
         val countryNameTv: TextView = view!!.findViewById(R.id.country_name)
         val countryName = countryNameTv.text.toString()
+        Log.d("COUNTRYNAME", countryName) // This works! It stores the country name. Now figure out why null pointer exception
         val bundle = bundleOf("countryName" to countryName)
         findNavController().navigate(R.id.action_countryExplorerFragment_to_singleCountryFragment, bundle)
     }
