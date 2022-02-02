@@ -12,16 +12,22 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.example.countryexplorer.R
 import com.example.countryexplorer.countryexplorer.CountryExplorerRepository
 import com.example.countryexplorer.countryexplorer.CountryExplorerRepositoryImpl
+import com.example.countryexplorer.countryexplorer.CountryExplorerViewState
 import com.example.countryexplorer.database.CountryDatabase
 import com.example.countryexplorer.database.CountryDatabaseDao
 import com.example.countryexplorer.databinding.FragmentSingleCountryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.list_item_country.*
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 import javax.inject.Inject
 
@@ -36,39 +42,68 @@ class SingleCountryFragment() : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         ui = DataBindingUtil.inflate(inflater, R.layout.fragment_single_country, container, false)
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.singleCountryViewStateFlow
+                    .collect {
+                            singleCountryViewState ->
+                        onViewStateUpdate(singleCountryViewState)
+                    }
+            }
+        }
+
         ui.singleCountryViewModel = viewModel
-
-        // this logic shouldn't be here
-        val countryName = getCountryNameFromArgs()
-//        getCountryDataFromDb(countryName)
-
-//        // TODO: fix this:
-//        viewModel.singleCountryViewStateFlow
-//            .onEach {
-//                singleCountryViewState
-//                onViewStateUpdate(singleCountryViewState)
-//            }.launchIn(lifecycleScope)
 
         return ui.root
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        val countryName = getCountryNameFromArgs()
+        viewModel.getCountryByName(countryName)
+    }
+
+
     fun onViewStateUpdate(viewState: SingleCountryViewState) {
         when (viewState) {
+            is SingleCountryViewState.NotFound -> {
+                ui.flagUrl.isVisible = false
+                ui.countryName.isVisible = false
+                ui.continent.isVisible = false
+                ui.countryPopulation.isVisible = false
+                ui.loadingIndicator.isVisible = false
+                Toast.makeText(activity, "COUNTRY NOT FOUND", Toast.LENGTH_LONG)
+                    .show()
+            }
+            is SingleCountryViewState.Loading -> {
+                ui.flagUrl.isVisible = false
+                ui.countryName.isVisible = false
+                ui.continent.isVisible = false
+                ui.countryPopulation.isVisible = false
+                ui.loadingIndicator.isVisible = true
+            }
             is SingleCountryViewState.Loaded -> {
                 ui.flagUrl.isVisible = true
                 ui.countryName.isVisible = true
                 ui.continent.isVisible = true
                 ui.countryPopulation.isVisible = true
+                ui.loadingIndicator.isVisible = false
+                ui.countryName.text = viewState.country.name
+                ui.countryPopulation.text = resources.getString(R.string.population, viewState.country.population)
+                ui.continent.text = viewState.country.continent
+
             }
             is SingleCountryViewState.Error -> {
                 ui.flagUrl.isVisible = false
                 ui.countryName.isVisible = false
                 ui.continent.isVisible = false
                 ui.countryPopulation.isVisible = false
+                ui.loadingIndicator.isVisible = false
                 Toast.makeText(activity, "Error: Country data not available", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -76,15 +111,8 @@ class SingleCountryFragment() : Fragment() {
     }
 
     private fun getCountryNameFromArgs(): String {
-//        Log.d("COUNTRYNAME in single", "GOT HERE")
-        val tv: TextView = view!!.findViewById(R.id.country_name)
+        val tv: TextView = ui.countryName
         return arguments?.getString("countryName").toString()
-//        val tv = view.findViewById<TextView>(R.id.country_name)
-//        return tv.text = arguments?.getString("countryName")
-    }
-
-    private fun getCountryDataFromDb(countryName: String) {
-//        viewModel.getCountryByName(countryName)
     }
 
 }

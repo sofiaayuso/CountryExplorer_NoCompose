@@ -1,7 +1,6 @@
 package com.example.countryexplorer.countryexplorer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,20 +11,14 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.countryexplorer.R
-import com.example.countryexplorer.database.CountryDatabase
-import com.example.countryexplorer.database.CountryDatabaseDao
 import com.example.countryexplorer.databinding.FragmentCountryExplorerBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.example.countryexplorer.singlecountry.RecyclerViewClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.list_item_country.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CountryExplorerFragment: Fragment(), RecyclerViewClickListener {
@@ -38,9 +31,8 @@ class CountryExplorerFragment: Fragment(), RecyclerViewClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        // TODO: Do I need to initialize these below:
         ui = DataBindingUtil.inflate(
             inflater, R.layout.fragment_country_explorer, container, false)
 
@@ -94,11 +86,9 @@ class CountryExplorerFragment: Fragment(), RecyclerViewClickListener {
         viewModel.onRefreshClicked()
     }
 
-    // TODO: Fix this
     override fun onClick(view: View?, position: Int) {
         val countryNameTv: TextView = view!!.findViewById(R.id.country_name)
         val countryName = countryNameTv.text.toString()
-        Log.d("COUNTRYNAME", countryName) // This works! It stores the country name. Now figure out why null pointer exception
         val bundle = bundleOf("countryName" to countryName)
         findNavController().navigate(R.id.action_countryExplorerFragment_to_singleCountryFragment, bundle)
     }

@@ -13,8 +13,7 @@ interface CountryExplorerRepository {
 
     fun getCountries(): Flow<List<Country>>
 
-    //TODO: I deleted suspend from the function below. Should I put it back?
-//    fun getCountryByName(countryName: String): Country
+    suspend fun getCountryByName(countryName: String): Result<Country>
 }
 
 class CountryExplorerRepositoryImpl @Inject constructor (
@@ -33,8 +32,7 @@ class CountryExplorerRepositoryImpl @Inject constructor (
         return dao.getCountries()
     }
 
-//    //TODO: Also here:
-//    override fun getCountryByName(countryName: String): Country {
-//        return dao.getCountryByName(countryName)
-//    }
+    override suspend fun getCountryByName(countryName: String): Result<Country> {
+        return kotlin.runCatching {  dao.getCountryByName(countryName) }
+    }
 }

@@ -10,8 +10,15 @@
         android:label="CountryExplorerFragment" >
         <action
             android:id="@+id/action_countryExplorerFragment_to_singleCountryFragment"
-            app:destination="@id/singleCountryFragment"
-            app:enterAnim="@anim/to_single_country"/>
+            app:destination="@+id/singleCountryFragment"
+            app:exitAnim="@anim/enter_left_to_right"
+            app:enterAnim="@anim/exit_left_to_right"/>
+        <action
+            android:id="@+id/action_singleCountryFragment_to_countryExplorerFragment"
+            app:destination="@id/countryExplorerFragment"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"/>
+
         <argument
             android:name="country_name"
             app:argType="string"
