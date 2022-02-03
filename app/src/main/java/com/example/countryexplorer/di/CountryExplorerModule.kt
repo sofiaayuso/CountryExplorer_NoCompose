@@ -1,12 +1,9 @@
 package com.example.countryexplorer.di
 
-import com.example.countryexplorer.countryexplorer.CountryExplorerRepository
-import com.example.countryexplorer.countryexplorer.CountryExplorerRepositoryImpl
-import com.example.countryexplorer.database.CountryDatabaseDao
-import com.example.countryexplorer.network.CountriesApiService
+import com.example.countryexplorer.network.CountryExplorerRepository
+import com.example.countryexplorer.network.CountryExplorerRepositoryImpl
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 

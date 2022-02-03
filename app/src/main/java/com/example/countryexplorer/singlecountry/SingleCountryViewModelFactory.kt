@@ -2,7 +2,7 @@ package com.example.countryexplorer.singlecountry
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.countryexplorer.countryexplorer.CountryExplorerRepository
+import com.example.countryexplorer.network.CountryExplorerRepository
 import java.lang.IllegalArgumentException
 
 /**

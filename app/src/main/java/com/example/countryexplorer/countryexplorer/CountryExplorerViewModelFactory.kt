@@ -2,6 +2,7 @@ package com.example.countryexplorer.countryexplorer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.countryexplorer.network.CountryExplorerRepository
 import java.lang.IllegalArgumentException
 
 /**
@@ -9,7 +10,8 @@ import java.lang.IllegalArgumentException
  */
 
 class CountryExplorerViewModelFactory(
-    private val repository: CountryExplorerRepository) : ViewModelProvider.Factory {
+    private val repository: CountryExplorerRepository
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CountryExplorerViewModel::class.java)) {

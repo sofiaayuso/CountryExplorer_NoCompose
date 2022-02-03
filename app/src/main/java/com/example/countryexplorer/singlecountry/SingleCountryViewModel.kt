@@ -1,11 +1,8 @@
 package com.example.countryexplorer.singlecountry
 
-import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.countryexplorer.countryexplorer.CountryExplorerRepository
-import com.example.countryexplorer.countryexplorer.CountryExplorerRepositoryImpl
-import com.example.countryexplorer.database.Country
+import com.example.countryexplorer.network.CountryExplorerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +12,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SingleCountryViewModel @Inject constructor(
 
-    private val repository: CountryExplorerRepository): ViewModel() {
+    private val repository: CountryExplorerRepository
+): ViewModel() {
 
     private val _singleCountryViewStateFlowUpdates: MutableStateFlow<SingleCountryViewState> = MutableStateFlow(
         SingleCountryViewState.Loading)

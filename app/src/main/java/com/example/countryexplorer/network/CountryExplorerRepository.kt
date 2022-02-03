@@ -1,8 +1,7 @@
-package com.example.countryexplorer.countryexplorer
+package com.example.countryexplorer.network
 
 import com.example.countryexplorer.database.Country
 import com.example.countryexplorer.database.CountryDatabaseDao
-import com.example.countryexplorer.network.CountriesApiService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

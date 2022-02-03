@@ -1,9 +1,7 @@
 package com.example.countryexplorer.singlecountry
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -13,23 +11,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.example.countryexplorer.R
-import com.example.countryexplorer.countryexplorer.CountryExplorerRepository
-import com.example.countryexplorer.countryexplorer.CountryExplorerRepositoryImpl
-import com.example.countryexplorer.countryexplorer.CountryExplorerViewState
-import com.example.countryexplorer.database.CountryDatabase
-import com.example.countryexplorer.database.CountryDatabaseDao
 import com.example.countryexplorer.databinding.FragmentSingleCountryBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.list_item_country.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SingleCountryFragment() : Fragment() {
