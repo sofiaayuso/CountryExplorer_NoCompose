@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.countryexplorer.R
 import com.example.countryexplorer.databinding.FragmentCountryExplorerBinding
 import kotlinx.coroutines.flow.launchIn
@@ -89,8 +87,7 @@ class CountryExplorerFragment: Fragment(), RecyclerViewClickListener {
     override fun onClick(view: View?, position: Int) {
         val countryNameTv: TextView = view!!.findViewById(R.id.country_name)
         val countryName = countryNameTv.text.toString()
-        val bundle = bundleOf("countryName" to countryName)
-        findNavController().navigate(R.id.action_countryExplorerFragment_to_singleCountryFragment, bundle)
+        viewModel.onCountryClicked(countryName)
     }
 
 }
