@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.countryexplorer.R
 import com.example.countryexplorer.databinding.FragmentCountryExplorerBinding
 import kotlinx.coroutines.flow.launchIn
@@ -43,9 +47,24 @@ class CountryExplorerFragment: Fragment(), RecyclerViewClickListener {
 
         ui.refreshButton.setOnClickListener { onRefreshClicked() }
 
+        setFragmentResultListener("requestKey") { _,_ ->
+            viewModel.clearNavState()
+        }
+
         viewModel.countryExplorerViewStateFlow
             .onEach { countryExplorerViewState ->
                 onViewStateUpdate(countryExplorerViewState)
+            }.launchIn(lifecycleScope)
+
+        viewModel.navStateFlow
+            .onEach {
+                when (it) {
+                    is CountryExplorerNavState.NavigateToDetails -> {
+                        val bundle = bundleOf("countryName" to it.countryName)
+                        setFragmentResult("requestKey", bundleOf())
+                        findNavController().navigate(R.id.action_countryExplorerFragment_to_singleCountryFragment, bundle)
+                    }
+                }
             }.launchIn(lifecycleScope)
 
         return ui.root
@@ -78,7 +97,6 @@ class CountryExplorerFragment: Fragment(), RecyclerViewClickListener {
             }
         }
     }
-
 
     fun onRefreshClicked() {
         viewModel.onRefreshClicked()

@@ -17,14 +17,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CountryExplorerViewModel @Inject constructor(
-    private val navigator: CountryExplorerNavigator,
     private val repository: CountryExplorerRepository
 ): ViewModel() {
 
     private val _countryExplorerViewStateFlowUpdates: MutableStateFlow<CountryExplorerViewState> = MutableStateFlow(CountryExplorerViewState.NotFound)
     val countryExplorerViewStateFlow: Flow<CountryExplorerViewState> = _countryExplorerViewStateFlowUpdates
 
+    private val _navStateFlow: MutableStateFlow<CountryExplorerNavState?> = MutableStateFlow(null)
+    val navStateFlow: Flow<CountryExplorerNavState?> = _navStateFlow
+
     init {
+        _navStateFlow.value = null
         observeCountryData()
     }
 
@@ -55,6 +58,10 @@ class CountryExplorerViewModel @Inject constructor(
     }
 
     fun onCountryClicked(countryName: String) {
-        navigator.navigateToDetails(countryName)
+        _navStateFlow.value = CountryExplorerNavState.NavigateToDetails(countryName)
+    }
+
+    fun clearNavState() {
+        _navStateFlow.value = null
     }
 }
