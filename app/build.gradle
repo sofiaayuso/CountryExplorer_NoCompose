@@ -9,6 +9,14 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 android {
     compileSdk 31
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
     defaultConfig {
         applicationId "com.example.com.example.countryexplorer.countryexplorer"
         minSdk 21
@@ -49,6 +57,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation('com.github.tomakehurst:wiremock-jre8:2.32.0') {
+        exclude group: 'org.hamcrest'
+    }
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.0"
 
     // Coil for image loading
